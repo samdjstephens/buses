@@ -1,23 +1,22 @@
 class BusTravelState(object):
-    def __init__(self, position, bus_route):
-        self.position = position
+    def __init__(self, bus_route):
         self.bus_route = bus_route
 
-    def get_next_position(self):
+    def get_next_position(self, current_position):
         raise NotImplementedError
 
 
 class LoadingState(BusTravelState):
-    def __init__(self, position, bus_route):
-        super(LoadingState, self).__init__(position, bus_route)
+    def __init__(self, bus_route):
+        super(LoadingState, self).__init__(bus_route)
 
-    def get_next_position(self):
-        pass
+    def get_next_position(self, current_position):
+        return current_position
 
 
 class TravellingState(BusTravelState):
-    def __init__(self, position, bus_route):
-        super(TravellingState, self).__init__(position, bus_route)
+    def __init__(self, bus_route):
+        super(TravellingState, self).__init__(bus_route)
 
-    def get_next_position(self):
-        self.position = self.bus_route.get_next_allowed_position(self.position)
+    def get_next_position(self, current_position):
+        return self.bus_route.get_next_allowed_position(current_position)

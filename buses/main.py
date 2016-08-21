@@ -1,2 +1,0 @@
-class EventLoop(object):
-    pass
