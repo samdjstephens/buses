@@ -2,9 +2,15 @@ class RouteSegment(object):
     def on_bus_at_position(self, bus):
         pass
 
+    def on_time_step(self):
+        pass
+
 
 class RoadSegment(RouteSegment):
     def on_bus_at_position(self, bus):
+        pass
+
+    def on_time_step(self):
         pass
 
 
