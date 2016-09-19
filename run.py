@@ -14,8 +14,8 @@ def build_objects(factory, n=1):
 
 
 def bus_stop_factory():
-    passenger_generator = PoissonRandomPassengerGenerator(RandomState(), 1)
-    init_passengers = random.randrange(10)
+    passenger_generator = PoissonRandomPassengerGenerator(RandomState(), 2)
+    init_passengers = random.randrange(2)
     return BusStopSegment(passenger_generator, init_passengers)
 
 
@@ -33,12 +33,12 @@ def build_buses(n_buses, positions, bus_route):
 
 class BusSimulation(object):
     def __init__(self):
-        segments = 20 * (build_objects(RoadSegment, 10) +
-                         build_objects(bus_stop_factory) +
-                         build_objects(RoadSegment, 10))
+        segments = (build_objects(RoadSegment, 5) +
+                    build_objects(bus_stop_factory) +
+                    build_objects(RoadSegment, 5))
         positions = [Position(segment) for segment in segments]
         self.bus_route = BusRoute(positions)
-        self.buses = build_buses(10, positions, self.bus_route)
+        self.buses = build_buses(1, positions, self.bus_route)
         self.event_loop = events.EventLoop()
         [self.event_loop.register(bus) for bus in self.buses]
         [self.event_loop.register(pos) for pos in positions]

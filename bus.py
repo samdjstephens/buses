@@ -1,3 +1,10 @@
+import logging
+
+log = logging.getLogger("buses")
+log.setLevel(logging.DEBUG)
+log.addHandler(logging.StreamHandler())
+
+
 class Bus(object):
     def __init__(self, bus_route, position):
         self.bus_route = bus_route
@@ -6,12 +13,15 @@ class Bus(object):
 
     def on_time_step(self):
         if self.state == "leaving":
+            log.debug("leaving bus stop")
             self.update_position()
             self.set_state("moving")
         elif self.state == "moving":
+            log.debug("travelling")
             self.update_position()
             self.position.on_bus_at_position()
         elif self.state == "stopped":
+            log.debug("bus stopped")
             self.position.on_bus_at_position()
 
     def update_position(self):
@@ -20,7 +30,7 @@ class Bus(object):
         self.position.on_arrive(self)
 
     def load_passengers(self, n_passengers):
-        print n_passengers, "passengers loading on", self
+        log.debug("{} passengers loading on bus".format(n_passengers))
         if n_passengers == 0:
             self.set_state("leaving")
         else:
