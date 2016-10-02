@@ -1,5 +1,7 @@
 from time import sleep
 
+from buses.log import log
+
 
 class EventLoop(object):
     def __init__(self, sleep=2):
@@ -12,6 +14,6 @@ class EventLoop(object):
     def run(self):
         while True:
             sleep(self.sleep)
-            print "Step"
+            log.debug("\n*** Step ***")
             for listener in self.listeners:
                 listener.on_time_step()

@@ -14,8 +14,9 @@ from buses.route_segments import BusStopSegment, RoadSegment
 
 bus_names = (num for num in xrange(1, 100000))
 stop_names = ("".join(letter_comb)
-              for letter_comb in itertools.combinations(string.ascii_uppercase,
+              for letter_comb in itertools.permutations(""+string.ascii_uppercase,
                                                         3))
+stop_names.next()
 
 
 def build_objects(factory, n=1):
@@ -43,9 +44,11 @@ class BusSimulation(object):
     def __init__(self):
         segments = (build_objects(RoadSegment, 5) +
                     build_objects(bus_stop_factory) +
-                    build_objects(RoadSegment, 5))
+                    build_objects(RoadSegment, 10) +
+                    build_objects(bus_stop_factory) +
+                    build_objects(RoadSegment, 3))
         self.bus_route = BusRoute(segments)
-        self.buses = build_buses(1, segments, self.bus_route)
+        self.buses = build_buses(2, segments, self.bus_route)
         self.event_loop = events.EventLoop()
         [self.event_loop.register(bus) for bus in self.buses]
         [self.event_loop.register(seg) for seg in segments]

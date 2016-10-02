@@ -14,7 +14,7 @@ class Bus(object):
         return "Bus {}".format(self.name)
 
     def on_time_step(self):
-        log.debug(self.state)
+        log.debug("{}: {}".format(self, self.state))
         if self.state == AtBusStop:
             bus_stop = self.route_segment
             self.load_passengers_from(bus_stop)
@@ -33,7 +33,8 @@ class Bus(object):
         if passenger is None:
             self.set_state(Travelling)
         else:
-            log.debug("Passenger got on bus {}".format(self))
+            log.debug("{}: Passenger got on bus {}".format(self.route_segment,
+                                                           self))
             self.set_state(AtBusStop)
 
     def set_state(self, state):

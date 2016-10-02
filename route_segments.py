@@ -54,7 +54,6 @@ class BusStopSegment(RouteSegment):
         new_passengers = self.passenger_generator.generate()
         self.passenger_count += new_passengers
         if new_passengers == 1:
-            log.debug("{} passenger arrived at {}."
-                      " Now there are {}".format(new_passengers,
-                                                 self,
+            log.debug("{}: 1 passenger arrived."
+                      " Now there are {}".format(self,
                                                  self.passenger_count))
