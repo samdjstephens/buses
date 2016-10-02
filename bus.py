@@ -1,43 +1,40 @@
-import logging
-
-log = logging.getLogger("buses")
-log.setLevel(logging.DEBUG)
-log.addHandler(logging.StreamHandler())
+from buses.bus_state import Travelling, AtBusStop
+from buses.route_segments import BusStopSegment
+from buses.log import log
 
 
 class Bus(object):
-    def __init__(self, bus_route, position):
+    def __init__(self, bus_route, route_segment, name=None):
         self.bus_route = bus_route
-        self.position = position
-        self.state = "moving"
+        self.route_segment = route_segment
+        self.state = Travelling
+        self.name = name
+
+    def __repr__(self):
+        return "Bus {}".format(self.name)
 
     def on_time_step(self):
-        if self.state == "leaving":
-            log.debug("leaving bus stop")
+        log.debug(self.state)
+        if self.state == AtBusStop:
+            bus_stop = self.route_segment
+            self.load_passengers_from(bus_stop)
+        elif self.state == Travelling:
             self.update_position()
-            self.set_state("moving")
-        elif self.state == "moving":
-            log.debug("travelling")
-            self.update_position()
-            self.position.on_bus_at_position()
-        elif self.state == "stopped":
-            log.debug("bus stopped")
-            self.position.on_bus_at_position()
 
     def update_position(self):
-        self.position.on_leave()
-        self.position = self.bus_route.get_next_allowed_position(self.position)
-        self.position.on_arrive(self)
+        self.route_segment.on_bus_leave()
+        self.route_segment = self.bus_route.get_next_allowed_segment(self.route_segment)
+        self.route_segment.on_bus_arrive()
+        if isinstance(self.route_segment, BusStopSegment):
+            self.set_state(AtBusStop)
 
-    def load_passengers(self, n_passengers):
-        log.debug("{} passengers loading on bus".format(n_passengers))
-        if n_passengers == 0:
-            self.set_state("leaving")
+    def load_passengers_from(self, bus_stop):
+        passenger = bus_stop.load_passenger()
+        if passenger is None:
+            self.set_state(Travelling)
         else:
-            self.set_state("stopped")
+            log.debug("Passenger got on bus {}".format(self))
+            self.set_state(AtBusStop)
 
     def set_state(self, state):
         self.state = state
-
-    def is_leaving(self):
-        return self.state in ["leaving", "moving"]

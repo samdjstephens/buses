@@ -1,11 +1,11 @@
 class BusRoute(object):
-    def __init__(self, positions):
-        self._positions = positions
+    def __init__(self, route_segments):
+        self._segments = route_segments
 
-    def get_next_allowed_position(self, current_position):
-        next_position_ix = ((self._positions.index(current_position) + 1) %
-                            len(self._positions))
-        next_position = self._positions[next_position_ix]
-        if not next_position.is_available():
-            next_position = self.get_next_allowed_position(next_position)
-        return next_position
+    def get_next_allowed_segment(self, current_segment):
+        next_segment_ix = ((self._segments.index(current_segment) + 1) %
+                            len(self._segments))
+        next_segment = self._segments[next_segment_ix]
+        if not next_segment.is_available:
+            next_segment = self.get_next_allowed_segment(next_segment)
+        return next_segment
