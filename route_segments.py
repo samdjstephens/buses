@@ -1,14 +1,12 @@
+from buses.events import EventLoopListener
 from buses.log import log
 
 
-class RouteSegment(object):
+class RouteSegment(EventLoopListener):
     def on_bus_arrive(self):
         pass
 
     def on_bus_leave(self):
-        pass
-
-    def on_time_step(self):
         pass
 
 
@@ -21,8 +19,6 @@ class RoadSegment(RouteSegment):
     def on_bus_leave(self):
         pass
 
-    def on_time_step(self):
-        pass
 
 
 class BusStopSegment(RouteSegment):
@@ -50,7 +46,7 @@ class BusStopSegment(RouteSegment):
             to_load = None
         return to_load
 
-    def on_time_step(self):
+    def on_time_step(self, *args):
         new_passengers = self.passenger_generator.generate()
         self.passenger_count += new_passengers
         if new_passengers == 1:

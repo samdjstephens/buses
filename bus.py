@@ -1,9 +1,10 @@
 from buses.bus_state import Travelling, AtBusStop
+from buses.events import EventLoopListener
 from buses.route_segments import BusStopSegment
 from buses.log import log
 
 
-class Bus(object):
+class Bus(EventLoopListener):
     def __init__(self, bus_route, route_segment, name=None):
         self.bus_route = bus_route
         self.route_segment = route_segment
@@ -13,7 +14,7 @@ class Bus(object):
     def __repr__(self):
         return "Bus {}".format(self.name)
 
-    def on_time_step(self):
+    def on_time_step(self, *args):
         log.debug("{}: {}".format(self, self.state))
         if self.state == AtBusStop:
             bus_stop = self.route_segment

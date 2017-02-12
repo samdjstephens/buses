@@ -2,7 +2,5 @@ import logging
 
 
 log = logging.getLogger("buses")
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
-
-
