@@ -45,11 +45,11 @@ def build_buses(n_buses, segments, bus_route):
 
 class BusSimulation(object):
     def __init__(self):
-        segments = (build_objects(RoadSegment, 5) +
+        segments = (build_objects(RoadSegment, 50) +
                     build_objects(bus_stop_factory) +
-                    build_objects(RoadSegment, 10) +
+                    build_objects(RoadSegment, 100) +
                     build_objects(bus_stop_factory) +
-                    build_objects(RoadSegment, 3))
+                    build_objects(RoadSegment, 30))
         log.log.info("Running with {} segments".format(len(segments)))
         self.bus_route = BusRoute(segments)
         self.buses = build_buses(2, segments, self.bus_route)
@@ -60,7 +60,7 @@ class BusSimulation(object):
         self.event_loop.register(self.position_recorder)
 
     def run(self):
-        self.event_loop.run(10000)
+        self.event_loop.run(100000)
         self.position_recorder.save_log()
 
 
