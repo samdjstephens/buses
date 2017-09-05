@@ -35,3 +35,9 @@ Setup: A circular route with 2 bus stops separated on one side by 1000 units and
 
 ### Bus separation distance (units) vs. Time (time steps)
 ![Separation over time](https://user-images.githubusercontent.com/5969393/30070633-fa08f3b4-925b-11e7-8843-387cadc87c57.png)
+
+### Analysis
+- Firstly, this plot clearly shows the separation distance between the two buses is closing over time
+- The rate that the distances closes increases with time (shown by the gradient getting steeper)
+- For the first 30K time steps, there is a regular pattern in which the distance temporarily increases before "resetting" then temporarily decreases and resets. Given the buses are, at this point, around 800 units apart and that this is one of the distances between the two bus stops, it is assumed that the up-spikes are caused by the trailing bus stopping for passengers just before the leading bus and visa-versa for the down-spikes. The up-spike, down-spike effect disappears after 30K time steps, presumably because the times at which the buses are at bus stops are no longer co-occurring. To validate these assumptions we could increase the resolution for the early time steps and overlay a graphic showing when the buses are stopped.
+- The time it takes for the buses to come together is quite slow. 100K time steps represents ~50 circuits for a bus. This is probably down to the relative time taken for different actions: particularly the small amount of time taken to load passengers (1 per time step) compared to time travelling. To calibrate this better, a greater understanding of the dynamics of the system over time would be instructive - e.g. a plot of number of passengers at bus stop A over time.
